@@ -14,7 +14,7 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Last build : 2017-4-14_14:35:50 / git revision : d5bb3be */
+/* Last build : 2017-5-19_16:18:42 / git revision : f69e204 */
 
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -71,8 +71,8 @@ MediaPlayer = function () {
     ////////////////////////////////////////// PRIVATE ////////////////////////////////////////////
     var VERSION_DASHJS = '1.2.0',
         VERSION = '1.10.0',
-        GIT_TAG = 'd5bb3be',
-        BUILD_DATE = '2017-4-14_14:35:50',
+        GIT_TAG = 'f69e204',
+        BUILD_DATE = '2017-5-19_16:18:42',
         context = new MediaPlayer.di.Context(), // default context
         system = new dijon.System(), // dijon system instance
         initialized = false,
@@ -26797,23 +26797,16 @@ Mss.dependencies.MssParser = function() {
         createVOWidevinePssh = function(KID) {
             var pssh = new Uint8Array([255, 255, 255, 255, 112, 115, 115, 104, 0, 0, 0, 0, 237, 239, 139, 169, 121, 214, 74, 206, 163, 200, 39, 220, 213, 29, 33, 237, 255, 255, 255, 255, 8, 1, 18, 16, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 26, 12, 118, 105, 97, 99, 99, 101, 115, 115, 111, 114, 99, 97, 42, 2, 83, 68]),
                 length = pssh.length,
-                dataLength = length - 32,
-                str = "",
-                i = 0;
-            if (pssh[0] = (4278190080 & length) >> 32,
-                pssh[1] = (16711680 & length) >> 16,
-                pssh[2] = (65280 & length) >> 8,
-                pssh[3] = 255 & length,
-                pssh[28] = (4278190080 & dataLength) >> 32,
-                pssh[29] = (16711680 & dataLength) >> 16,
-                pssh[30] = (65280 & dataLength) >> 8,
-                pssh[31] = 255 & dataLength,
-                pssh.set(KID, 36)) {
-                for (str = "", i = 0; i < pssh.length; i++) {
-                    str += "\\0x" + pssh[i].toString(16);
-                }
-            }
-            pssh = String.fromCharCode.apply(null, pssh);
+                dataLength = length - 32;
+            pssh[0]  = (4278190080 & length) >> 32;
+            pssh[1]  = (16711680 & length) >> 16;
+            pssh[2]  = (65280 & length) >> 8;
+            pssh[3]  = (255 & length);
+            pssh[28] = (4278190080 & dataLength) >> 32;
+            pssh[29] = (16711680 & dataLength) >> 16;
+            pssh[30] = (65280 & dataLength) >> 8;
+            pssh[31] = (255 & dataLength);
+            pssh.set(KID, 36);
             return BASE64.encodeASCII(pssh);
         },
 
@@ -26887,7 +26880,7 @@ Mss.dependencies.MssParser = function() {
                 // ADF: DAURELL: NYAP: GET PSSH FROM KID
                 if(!contentProtection.pssh) {
                     contentProtection.pssh = {
-                        __text: createVOWidevinePssh.call(this,KID)
+                        __text: createVOWidevinePssh.call(this, KID)
                     };
                 }
 
