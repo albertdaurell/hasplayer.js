@@ -454,23 +454,16 @@ Mss.dependencies.MssParser = function() {
         createVOWidevinePssh = function(KID) {
             var pssh = new Uint8Array([255, 255, 255, 255, 112, 115, 115, 104, 0, 0, 0, 0, 237, 239, 139, 169, 121, 214, 74, 206, 163, 200, 39, 220, 213, 29, 33, 237, 255, 255, 255, 255, 8, 1, 18, 16, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 26, 12, 118, 105, 97, 99, 99, 101, 115, 115, 111, 114, 99, 97, 42, 2, 83, 68]),
                 length = pssh.length,
-                dataLength = length - 32,
-                str = "",
-                i = 0;
-            if (pssh[0] = (4278190080 & length) >> 32,
-                pssh[1] = (16711680 & length) >> 16,
-                pssh[2] = (65280 & length) >> 8,
-                pssh[3] = 255 & length,
-                pssh[28] = (4278190080 & dataLength) >> 32,
-                pssh[29] = (16711680 & dataLength) >> 16,
-                pssh[30] = (65280 & dataLength) >> 8,
-                pssh[31] = 255 & dataLength,
-                pssh.set(KID, 36)) {
-                for (str = "", i = 0; i < pssh.length; i++) {
-                    str += "\\0x" + pssh[i].toString(16);
-                }
-            }
-            pssh = String.fromCharCode.apply(null, pssh);
+                dataLength = length - 32;
+            pssh[0]  = (4278190080 & length) >> 32;
+            pssh[1]  = (16711680 & length) >> 16;
+            pssh[2]  = (65280 & length) >> 8;
+            pssh[3]  = (255 & length);
+            pssh[28] = (4278190080 & dataLength) >> 32;
+            pssh[29] = (16711680 & dataLength) >> 16;
+            pssh[30] = (65280 & dataLength) >> 8;
+            pssh[31] = (255 & dataLength);
+            pssh.set(KID, 36);
             return BASE64.encodeASCII(pssh);
         },
 
@@ -545,7 +538,7 @@ Mss.dependencies.MssParser = function() {
                 // ADF: DAURELL: NYAP: GET PSSH FROM KID
                 if(!contentProtection.pssh) {
                     contentProtection.pssh = {
-                        __text: createVOWidevinePssh.call(this,KID)
+                        __text: createVOWidevinePssh.call(this, KID)
                     };
                 }
 
