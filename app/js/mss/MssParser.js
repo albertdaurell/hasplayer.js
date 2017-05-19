@@ -464,6 +464,7 @@ Mss.dependencies.MssParser = function() {
             pssh[30] = (65280 & dataLength) >> 8;
             pssh[31] = (255 & dataLength);
             pssh.set(KID, 36);
+            pssh = String.fromCharCode.apply(null, pssh);
             return BASE64.encodeASCII(pssh);
         },
 
