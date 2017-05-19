@@ -175,8 +175,8 @@ app.controller('DashController', ['$scope', '$window', 'Sources', 'Notes','Contr
 
     $scope.optionsBandwidthGrid = null;
 
-    $scope.streamTypes = ["HLS", "MSS", "DASH"];
-    $scope.streamType = "MSS";
+    $scope.streamTypes = ["HLS", "MSS", "DASH", "PLAYBACK"];
+    $scope.streamType = "PLAYBACK";
 
     $scope.protectionTypes = ["PlayReady", "Widevine"];
     $scope.protectionType = (bowser.chrome || bowser.firefox) ? "Widevine" : "PlayReady";
@@ -910,6 +910,8 @@ app.controller('DashController', ['$scope', '$window', 'Sources', 'Notes','Contr
         //player.attachTTMLRenderingDiv(subtitlesDiv);
 
         $scope.playbackRate = "x1";
+        localStorage.setItem("url",$scope.selectedItem.url);
+        localStorage.setItem("laurl",$scope.selectedItem.protData['com.widevine.alpha'].laURL);
         player.load($scope.selectedItem);
     }
 
@@ -941,11 +943,13 @@ app.controller('DashController', ['$scope', '$window', 'Sources', 'Notes','Contr
 
     // Get initial stream if it was passed in.
     if (vars && vars.hasOwnProperty("url")) {
-        $scope.selectedItem.url = vars.url;
+        $scope.selectedItem.url = vars.url.indexOf("%3A")>0?decodeURIComponent(vars.url):vars.url;
     }
-
-    if (vars && vars.hasOwnProperty("mpd")) {
+    else if (vars && vars.hasOwnProperty("mpd")) {
         $scope.selectedItem.url = vars.mpd;
+    }
+    else if(localStorage.getItem("url")) {
+        $scope.selectedItem.url = localStorage.getItem("url");
     }
 
     if (vars && vars.hasOwnProperty("stream")) {
@@ -957,6 +961,14 @@ app.controller('DashController', ['$scope', '$window', 'Sources', 'Notes','Contr
 
     if (vars && vars.hasOwnProperty("startTime") && $scope.selectedItem) {
         $scope.selectedItem.startTime = vars.startTime;
+    }
+
+    if (vars && vars.hasOwnProperty("laurl")) {
+        $scope.selectedItem.protData[$scope.protectionScheme].laURL = vars.laurl.indexOf("%3A")>0?decodeURIComponent(vars.laurl):vars.laurl;
+        $scope.selectedItem.protData['com.widevine.alpha'].laURL = vars.laurl.indexOf("%3A")>0?decodeURIComponent(vars.laurl):vars.laurl;
+    }
+    else if(localStorage.getItem("laurl")) {
+         $scope.selectedItem.protData['com.widevine.alpha'].laURL = localStorage.getItem("laurl");
     }
 
     if (vars && vars.hasOwnProperty("autoplay") && vars.autoplay === 'true' && $scope.selectedItem.url) {
